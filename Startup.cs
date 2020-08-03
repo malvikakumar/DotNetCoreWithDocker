@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -49,7 +50,9 @@ namespace TodoApi
                 // Redirect to an external URL
                 if (url.Contains("/api/v1") && !url.EndsWith("api/v1/status"))
                 {
-                    context.Response.Redirect("/api/v1/status");
+                    context.Response.StatusCode = 200;
+                    await context.Response.WriteAsync("Success");
+                    // context.Response.Redirect("/api/v1/status"); => Gives "Success" but with 304 status code due to redirect
                     return;   // short circuit
                 }
 
