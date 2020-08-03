@@ -42,6 +42,20 @@ namespace TodoApi
 
             app.UseAuthorization();
 
+            app.Use(async (context,next) =>
+            {
+                var url = context.Request.Path.Value;
+
+                // Redirect to an external URL
+                if (url.Contains("/api/v1") && !url.EndsWith("api/v1/status"))
+                {
+                    context.Response.Redirect("/api/v1/status");
+                    return;   // short circuit
+                }
+
+                await next();
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
