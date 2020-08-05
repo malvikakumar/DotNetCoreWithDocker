@@ -12,11 +12,18 @@ namespace TodoApi.Controllers
     [Route("api/v1/[controller]")]
     public class StatusController : ControllerBase
     {
+    private readonly ILogger _logger;
+    public StatusController(ILogger<StatusController> logger)
+    {
+        _logger = logger;
+    }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Get()
         {
+            _logger.LogInformation("Get method called");
             return Content("Success");
         }
     }
