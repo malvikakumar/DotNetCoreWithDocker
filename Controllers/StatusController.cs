@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 namespace TodoApi.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("[controller]")]
     public class StatusController : ControllerBase
     {
     private readonly ILogger _logger;

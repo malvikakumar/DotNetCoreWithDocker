@@ -25,7 +25,11 @@ namespace TodoApi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+            services.AddMvc(opt => {
+                opt.UseCentralRoutePrefix(new RouteAttribute("api/v1"));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddControllers();
         }
 
@@ -43,21 +47,21 @@ namespace TodoApi
 
             app.UseAuthorization();
 
-            app.Use(async (context,next) =>
-            {
-                var url = context.Request.Path.Value;
+            // app.Use(async (context,next) =>
+            // {
+            //     var url = context.Request.Path.Value;
 
-                // Redirect to an external URL
-                if (url.Contains("/api/v1") && !url.EndsWith("api/v1/status"))
-                {
-                    context.Response.StatusCode = 200;
-                    await context.Response.WriteAsync("Success");
-                    // context.Response.Redirect("/api/v1/status"); => Gives "Success" but with 304 status code due to redirect
-                    return;   // short circuit
-                }
+            //     // Redirect to an external URL
+            //     if (url.Contains("/api/v1") && !url.EndsWith("api/v1/status"))
+            //     {
+            //         context.Response.StatusCode = 200;
+            //         await context.Response.WriteAsync("Success");
+            //         // context.Response.Redirect("/api/v1/status"); => Gives "Success" but with 304 status code due to redirect
+            //         return;   // short circuit
+            //     }
 
-                await next();
-            });
+            //     await next();
+            // });
 
             app.UseEndpoints(endpoints =>
             {
